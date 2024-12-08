@@ -1,20 +1,22 @@
 import React, { Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import Experience from "./Experience";
+import { OrbitControls } from "@react-three/drei";
 
 const App = () => {
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <Canvas
         shadows
-        camera={{ position: [0, 0.09, 5], fov: 45 }}
+        camera={{ position: [-20,15,40], fov: 80 }}
         gl={{ alpha: true }}
-      >
+      > 
+        <OrbitControls />
         <color attach="background" args={["#000000"]} />
         <Suspense>
           <Experience />
         </Suspense>
-        <Rig from={0} to={2.66} />
+        {/* <Rig from={0} to={2.66} /> */}
       </Canvas>
     </div>
   );

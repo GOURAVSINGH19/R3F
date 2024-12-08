@@ -23,6 +23,7 @@ import Floor4 from "/floor-img/perlin-2.webp";
 
 import fragmentShader from "./Component/shaders/Fragment.glsl";
 import vertexShader from "./Component/shaders/Vertex.glsl";
+import Water from "./Component/Water";
 gsap.registerPlugin(ScrollTrigger);
 const Experience = () => {
   const camera = new THREE.PerspectiveCamera();
@@ -48,106 +49,106 @@ const Experience = () => {
     texture.generateMipmaps = false;
   });
 
-  useEffect(() => {
-    let timeoutId;
-    const handleWheel = () => {
-      const currentTime = Date.now();
-      if (currentTime - lastWheel.current >= throttleDelay) {
-        lastWheel.current = currentTime;
+  // useEffect(() => {
+  //   let timeoutId;
+  //   const handleWheel = () => {
+  //     const currentTime = Date.now();
+  //     if (currentTime - lastWheel.current >= throttleDelay) {
+  //       lastWheel.current = currentTime;
 
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          scrollCount.current = (scrollCount.current + 1) % 4;
+  //       clearTimeout(timeoutId);
+  //       timeoutId = setTimeout(() => {
+  //         scrollCount.current = (scrollCount.current + 1) % 4;
 
-          gsap.to(groupRef.current.rotation, {
-            y: `+=${Math.PI / 2}`,
-            duration: 1,
-            ease: "expo.easeInOut",
-          });
+  //         gsap.to(groupRef.current.rotation, {
+  //           y: `+=${Math.PI / 2}`,
+  //           duration: 1,
+  //           ease: "expo.easeInOut",
+  //         });
 
-        }, 2000);
-      }
-    };
+  //       }, 2000);
+  //     }
+  //   };
 
-    // const isMobile =
-    //   /Mobi|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Android/i.test(
-    //     navigator.userAgent
-    //   );
+  //   // const isMobile =
+  //   //   /Mobi|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Android/i.test(
+  //   //     navigator.userAgent
+  //   //   );
 
-    // if (!isMobile) {
-    //   const handleMouseMove = (e) => {
-    //     const mouse = new THREE.Vector2(
-    //       (e.clientX / window.innerWidth) * 2 - 1,
-    //       -(e.clientY / window.innerHeight) * 2 + 1
-    //     );
+  //   // if (!isMobile) {
+  //   //   const handleMouseMove = (e) => {
+  //   //     const mouse = new THREE.Vector2(
+  //   //       (e.clientX / window.innerWidth) * 2 - 1,
+  //   //       -(e.clientY / window.innerHeight) * 2 + 1
+  //   //     );
 
-    //     raycaster.setFromCamera(mouse, camera);
+  //   //     raycaster.setFromCamera(mouse, camera);
 
-    //     const intersects = raycaster.intersectObjects(
-    //       groupRef.current.children
-    //     );
+  //   //     const intersects = raycaster.intersectObjects(
+  //   //       groupRef.current.children
+  //   //     );
 
-    //     groupRef.current.children.forEach((plane) => {
-    //       gsap.to(plane.material.uniforms.uHover, { value: 0, duration: 0.3 });
-    //     });
+  //   //     groupRef.current.children.forEach((plane) => {
+  //   //       gsap.to(plane.material.uniforms.uHover, { value: 0, duration: 0.3 });
+  //   //     });
 
-    //     // if (intersects.length > 0) {
-    //     //   const intersectedPlane = intersects[0];
-    //     //   const uv = intersectedPlane.uv;
+  //   //     // if (intersects.length > 0) {
+  //   //     //   const intersectedPlane = intersects[0];
+  //   //     //   const uv = intersectedPlane.uv;
 
-    //     //   // gsap.to(intersectedPlane.object.material.uniforms.uMouse.value, {
-    //     //   //   x: uv.x,
-    //     //   //   y: uv.y,
-    //     //   //   duration: 0.5,
-    //     //   // });
+  //   //     //   // gsap.to(intersectedPlane.object.material.uniforms.uMouse.value, {
+  //   //     //   //   x: uv.x,
+  //   //     //   //   y: uv.y,
+  //   //     //   //   duration: 0.5,
+  //   //     //   // });
 
-    //     //   // gsap.to(intersectedPlane.object.material.uniforms.uHover, {
-    //     //   //   value: 1,
-    //     //   //   duration: 0.5,
-    //     //   // });
-    //     // }
-    //   };
+  //   //     //   // gsap.to(intersectedPlane.object.material.uniforms.uHover, {
+  //   //     //   //   value: 1,
+  //   //     //   //   duration: 0.5,
+  //   //     //   // });
+  //   //     // }
+  //   //   };
 
-    // }
+  //   // }
 
-    window.addEventListener("wheel", handleWheel, { passive: true });
+  //   window.addEventListener("wheel", handleWheel, { passive: true });
 
-    // if (isMobile) {
-    //   ScrollTrigger.create({
-    //     trigger: document.body,
-    //     start: "top top",
-    //     end: "bottom bottom",
-    //     scrub: true,
-    //     onUpdate: (self) => {
-    //       const scrollY = self.progress() * Math.PI * 2;
-    //       gsap.to(groupRef.current.rotation, {
-    //         y: scrollY,
-    //         duration: 0.5,
-    //         ease: "power2.inOut",
-    //       });
-    //     },
-    //   });
-    // }
+  //   // if (isMobile) {
+  //   //   ScrollTrigger.create({
+  //   //     trigger: document.body,
+  //   //     start: "top top",
+  //   //     end: "bottom bottom",
+  //   //     scrub: true,
+  //   //     onUpdate: (self) => {
+  //   //       const scrollY = self.progress() * Math.PI * 2;
+  //   //       gsap.to(groupRef.current.rotation, {
+  //   //         y: scrollY,
+  //   //         duration: 0.5,
+  //   //         ease: "power2.inOut",
+  //   //       });
+  //   //     },
+  //   //   });
+  //   // }
 
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-    };
-    window.addEventListener("resize", handleResize);
+  //   const handleResize = () => {
+  //     camera.aspect = window.innerWidth / window.innerHeight;
+  //     camera.updateProjectionMatrix();
+  //   };
+  //   window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("resize", handleResize);
-      clearTimeout(timeoutId);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("wheel", handleWheel);
+  //     window.removeEventListener("resize", handleResize);
+  //     clearTimeout(timeoutId);
+  //   };
+  // }, []);
 
  
   return (
     <>
       <Environment preset="sunset" />
       <ambientLight intensity={4} />
-      <group ref={groupRef}>
+      {/* <group ref={groupRef}>
         {Array.from({ length: numberOfPlanes }).map((_, i) => {
           const angle = (i / numberOfPlanes) * (Math.PI * 2);
           return (
@@ -180,8 +181,8 @@ const Experience = () => {
             </mesh>
           );
         })}
-      </group>
-      <mesh position-y={-0.88} rotation-x={-Math.PI / 2}>
+      </group> */}
+      {/* <mesh position-y={-0.88} rotation-x={-Math.PI / 2}>
         <planeGeometry args={[100, 100]} />
         <MeshReflectorMaterial
           map={floorTextures[3]}
@@ -196,11 +197,11 @@ const Experience = () => {
           minDepthThreshold={0.4}
           maxDepthThreshold={1.4}
           metalness={0.5}
-          // color={"#222"}
           side={THREE.DoubleSide}
           envMapIntensity={.3}
         />
-      </mesh>
+      </mesh> */}
+      <Water/>
     </>
   );
 };

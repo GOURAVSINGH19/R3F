@@ -21,10 +21,31 @@ export default function Water() {
   })
 
   // Material attributes
-  waterMaterial.transmission = 1
-  waterMaterial.metalness = 0
-  waterMaterial.roughness = 0
-  waterMaterial.color = new Color(0x217d9c)
+  waterMaterial.const gltfLoader = new GLTFLoader();
+gltfLoader.load("/black_chair.glb", (gltf) => {
+  gltf.scene.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+      child.rotation.z= .2
+    }
+  });
+
+  let tl = gsap.timeline();
+
+  tl.to(
+    gltf.scene,
+    {
+      position: 2,
+      duration: 0.2,
+    },
+    "+2"
+  );
+  scene.add(gltf.scene);
+});transmission = .1
+  waterMaterial.metalness = .1
+  waterMaterial.roughness = 0.2
+  waterMaterial.color = new Color("blue")
 
   // Defines
   waterMaterial.defines.WIDTH = WIDTH.toFixed(1)
@@ -39,7 +60,7 @@ export default function Water() {
   heightmapVariable = gpuCompute.addVariable("heightmap", heightmapFragmentShader, heightmap0)
   gpuCompute.setVariableDependencies(heightmapVariable, [heightmapVariable])
   heightmapVariable.material.uniforms["mousePos"] = { value: new Vector2(10000, 10000) }
-  heightmapVariable.material.uniforms["mouseSize"] = { value: 20.0 }
+  heightmapVariable.material.uniforms["mouseSize"] = { value: 12.0 }
   heightmapVariable.material.uniforms["viscosityConstant"] = { value: 0.98 }
   heightmapVariable.material.uniforms["heightCompensation"] = { value: 0 }
   heightmapVariable.material.defines.BOUNDS = BOUNDS.toFixed(1)
@@ -60,7 +81,7 @@ export default function Water() {
 
   return (
     <>
-      <mesh material={waterMaterial} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} scale={0.4} castShadow receiveShadow>
+      <mesh material={waterMaterial} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} scale={3} castShadow receiveShadow>
         <planeGeometry args={[BOUNDS, BOUNDS, WIDTH, WIDTH]} />
       </mesh>
     </>
